@@ -22,10 +22,7 @@ const cardGradient = computed(() => {
 
 <template>
   <q-page class="row items-center justify-evenly q-pa-lg gradient">
-    <q-card
-      class="my-card"
-      :style="{ maskImage: cardGradient }"
-    />
+    <q-card class="my-card" :style="{ maskImage: cardGradient }" />
   </q-page>
   <div class="q-pa-lg absolute circle-holder" :style="{ top: `${y}px`, left: `${x}px`, opacity, filter: `blur(${blur}px)` }">
     <div class="text-center">
@@ -36,7 +33,7 @@ const cardGradient = computed(() => {
 
 <style lang="scss" scoped>
 .gradient {
-  background: linear-gradient(to top, #add8e6, rgb(83, 115, 154));
+  background: linear-gradient(to top, #add8e6, $primary);
 }
 .round {
   border-radius: 50%;

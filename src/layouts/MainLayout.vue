@@ -82,7 +82,7 @@ export default defineComponent({
         />
 
         <q-toolbar-title>
-          Quasar App
+          Hello World!
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
