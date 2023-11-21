@@ -1,49 +1,51 @@
-<script lang="ts">
-import type { Meta, Todo } from 'components/models'
-import ExampleComponent from 'components/ExampleComponent.vue'
-import { defineComponent, ref } from 'vue'
+<script  setup lang="ts">
+import { useMouse, useWindowSize } from '@vueuse/core'
+import { computed, ref } from 'vue'
 
-export default defineComponent({
-  name: 'IndexPage',
-  components: { ExampleComponent },
-  setup() {
-    const todos = ref<Todo[]>([
-      {
-        id: 1,
-        content: 'ct1',
-      },
-      {
-        id: 2,
-        content: 'ct2',
-      },
-      {
-        id: 3,
-        content: 'ct3',
-      },
-      {
-        id: 4,
-        content: 'ct4',
-      },
-      {
-        id: 5,
-        content: 'ct5',
-      },
-    ])
-    const meta = ref<Meta>({
-      totalCount: 1200,
-    })
-    return { todos, meta }
-  },
+const { x, y } = useMouse()
+const { width, height } = useWindowSize()
+
+const dx = computed(() => x.value - width.value / 2)
+const dy = computed(() => y.value - height.value / 2)
+const distance = computed(() => Math.sqrt(dx.value ** 2 + dy.value ** 2))
+const size = computed(() => Math.max(350 - distance.value / 3, 150))
+const opacity = computed(() => 150 / size.value)
+const blur = computed(() => Math.max(64 * (1 - opacity.value), 24))
+
+const cardGradient = computed(() => {
+  const xPos = (x.value / width.value) * 100
+  const yPos = (y.value / height.value) * 100
+
+  return `radial-gradient(circle at ${xPos}% ${yPos}%, rgba(0, 0, 0, 1), transparent)`
 })
 </script>
 
 <template>
-  <q-page class="row items-center justify-evenly">
-    <ExampleComponent
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
+  <q-page class="row items-center justify-evenly q-pa-lg gradient">
+    <q-card
+      class="my-card"
+      :style="{ maskImage: cardGradient }"
     />
   </q-page>
+  <div class="q-pa-lg absolute circle-holder" :style="{ top: `${y}px`, left: `${x}px`, opacity, filter: `blur(${blur}px)` }">
+    <div class="text-center">
+      <div class="bg-positive round q-pa-lg" :style="{ width: `${size}px`, height: `${size}px` }" />
+    </div>
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.gradient {
+  background: linear-gradient(to top, #add8e6, rgb(83, 115, 154));
+}
+.round {
+  border-radius: 50%;
+}
+.circle-holder {
+  transform: translate(-50%, -50%);
+}
+.my-card {
+  min-height: 100px;
+  min-width: 100px;
+}
+</style>
