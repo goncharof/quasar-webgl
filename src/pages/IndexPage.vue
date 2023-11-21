@@ -8,7 +8,7 @@ const { width, height } = useWindowSize()
 const dx = computed(() => x.value - width.value / 2)
 const dy = computed(() => y.value - height.value / 2)
 const distance = computed(() => Math.sqrt(dx.value ** 2 + dy.value ** 2))
-const size = computed(() => Math.max(350 - distance.value / 3, 150))
+const size = computed(() => Math.max(250 - distance.value / 3, 100))
 const opacity = computed(() => 150 / size.value)
 const blur = computed(() => Math.max(64 * (1 - opacity.value), 24))
 
