@@ -9,7 +9,7 @@ let program: WebGLProgram
 
 const vertices = [0.0, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0]
 const colors = [
-  [1.0, 1.0, 1.0], // white
+  [0.0, 0.0, 0.0], // white
   [1.0, 0.0, 0.0], // red
   [0.0, 1.0, 0.0], // green
   [0.0, 0.0, 1.0], // blue
@@ -20,11 +20,11 @@ const direct = ref(1)
 const fixTime = ref(0)
 const angle = ref(0)
 
-const matrix = ref({
+const matrix = {
   world: new Float32Array(16),
   proj: new Float32Array(16),
   view: new Float32Array(16),
-})
+}
 
 const ucolor = computed(() => {
   let deg = angle.value * 180 / Math.PI
@@ -45,7 +45,7 @@ function getGlContext() {
     gl = canvas.getContext('webgl')!
   }
 
-  if (gl)
+  if (!gl)
     console.warn('WebGL not supported')
 }
 
@@ -100,21 +100,21 @@ function render(now: number) {
   angle.value += Math.PI * deltaTime / 5 // 5 seconds full rotation
 
   glMatrix.mat4.rotate(
-    matrix.value.world,
-    matrix.value.world,
+    matrix.world,
+    matrix.world,
     angle.value,
     [0, direct.value, 0],
   )
 
   const matWorldUniformLocation = gl.getUniformLocation(program, 'mWorld')
-  gl.uniformMatrix4fv(matWorldUniformLocation, false, matrix.value.world)
+  gl.uniformMatrix4fv(matWorldUniformLocation, false, matrix.world)
 
   const colorLocation = gl.getUniformLocation(program, 'fragColor')
 
   gl.uniform3fv(colorLocation, ucolor.value)
 
   gl.clearColor(0.5, 0.5, 0.5, 1.0)
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+  // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
   gl.drawArrays(gl.TRIANGLES, 0, 3)
 
@@ -152,18 +152,18 @@ function play() {
   const matViewUniformLocation = gl.getUniformLocation(program, 'mView')
   const matProjUniformLocation = gl.getUniformLocation(program, 'mProj')
 
-  glMatrix.mat4.identity(matrix.value.world)
-  glMatrix.mat4.lookAt(matrix.value.view, [0, 0, 2], [0, 0, 0], [0, 1, 0])
+  glMatrix.mat4.identity(matrix.world)
+  glMatrix.mat4.lookAt(matrix.view, [0, 0, 2], [0, 0, 0], [0, 1, 0])
   glMatrix.mat4.perspective(
-    matrix.value.proj,
+    matrix.proj,
     Math.PI / 4,
     (gl.canvas as HTMLCanvasElement).clientWidth / (gl.canvas as HTMLCanvasElement).clientHeight,
     0.1,
     1000.0,
   )
 
-  gl.uniformMatrix4fv(matViewUniformLocation, false, matrix.value.view)
-  gl.uniformMatrix4fv(matProjUniformLocation, false, matrix.value.proj)
+  gl.uniformMatrix4fv(matViewUniformLocation, false, matrix.view)
+  gl.uniformMatrix4fv(matProjUniformLocation, false, matrix.proj)
 
   requestAnimationFrame(render)
 }
@@ -174,19 +174,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="app">
-    <canvas id="triangle">
-      Your browser doesn't appear to support the HTML5 <code>&lt;this.$refs.canvas&gt;</code> element.
-    </canvas>
-    <div>
-      <button @click="direct = -direct">
-        direction
-      </button>
-      <button @click="reverseColor = !reverseColor">
-        reverse colors
-      </button>
-    </div>
-  </div>
+  <!-- <div id="app"> -->
+  <canvas id="triangle">
+    Your browser doesn't appear to support the HTML5 <code>&lt;this.$refs.canvas&gt;</code> element.
+  </canvas>
+  <!-- <div>
+    <button @click="direct = -direct">
+      direction
+    </button>
+    <button @click="reverseColor = !reverseColor">
+      reverse colors
+    </button>
+  </div> -->
+  <!-- </div> -->
 </template>
 
 <style scoped>
