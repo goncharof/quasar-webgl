@@ -23,8 +23,10 @@ const cardGradient = computed(() => {
 
 <template>
   <q-page class="row items-center justify-evenly q-pa-lg gradient">
-    <q-card class="my-card" :style="{ maskImage: cardGradient }">
-      <GlTriangle />
+    <q-card :style="{ maskImage: cardGradient }">
+      <q-card-section>
+        <GlTriangle />
+      </q-card-section>
     </q-card>
   </q-page>
   <div
@@ -46,9 +48,6 @@ const cardGradient = computed(() => {
 }
 .circle-holder {
   transform: translate(-50%, -50%);
-}
-.my-card {
-  min-height: 100px;
-  min-width: 100px;
+  pointer-events: none;
 }
 </style>
