@@ -10,7 +10,7 @@ const dy = computed(() => y.value - height.value / 2)
 const distance = computed(() => Math.sqrt(dx.value ** 2 + dy.value ** 2))
 const size = computed(() => Math.max(250 - distance.value / 3, 100))
 const opacity = computed(() => 100 / size.value)
-const blur = computed(() => Math.max(64 * (1 - opacity.value), 24))
+const blur = computed(() => Math.max(64 * (1 - opacity.value), 18))
 
 const cardGradient = computed(() => {
   const xPos = (x.value / width.value) * 100
@@ -24,9 +24,12 @@ const cardGradient = computed(() => {
   <q-page class="row items-center justify-evenly q-pa-lg gradient">
     <q-card class="my-card" :style="{ maskImage: cardGradient }" />
   </q-page>
-  <div class="q-pa-lg absolute circle-holder" :style="{ top: `${y}px`, left: `${x}px`, opacity, filter: `blur(${blur}px)` }">
+  <div
+    class="q-pa-lg absolute circle-holder"
+    :style="{ top: `${y}px`, left: `${x}px`, opacity: opacity ** 2, filter: `blur(${blur}px)` }"
+  >
     <div class="text-center">
-      <div class="bg-positive round q-pa-lg" :style="{ width: `${size}px`, height: `${size}px` }" />
+      <div class="bg-white round q-pa-lg" :style="{ width: `${size}px`, height: `${size}px` }" />
     </div>
   </div>
 </template>
