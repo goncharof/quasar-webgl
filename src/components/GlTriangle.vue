@@ -178,15 +178,14 @@ onMounted(() => {
   <canvas id="triangle">
     Your browser doesn't appear to support the HTML5 <code>&lt;this.$refs.canvas&gt;</code> element.
   </canvas>
-  <!-- <div>
-    <button @click="direct = -direct">
+  <div class="row justify-around">
+    <q-chip clickable color="secondary" text-color="white" icon="directions" @click="direct = -direct">
       direction
-    </button>
-    <button @click="reverseColor = !reverseColor">
+    </q-chip>
+    <q-chip clickable color="secondary" text-color="white" icon="color_lens" @click="reverseColor = !reverseColor">
       reverse colors
-    </button>
-  </div> -->
-  <!-- </div> -->
+    </q-chip>
+  </div>
 </template>
 
 <style scoped>
