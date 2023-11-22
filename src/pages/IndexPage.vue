@@ -1,6 +1,6 @@
 <script  setup lang="ts">
 import { useMouse, useWindowSize } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 const { x, y } = useMouse()
 const { width, height } = useWindowSize()
@@ -22,7 +22,9 @@ const cardGradient = computed(() => {
 
 <template>
   <q-page class="row items-center justify-evenly q-pa-lg gradient">
-    <q-card class="my-card" :style="{ maskImage: cardGradient }" />
+    <q-card class="my-card" :style="{ maskImage: cardGradient }">
+      <!-- <GlTriangle /> -->
+    </q-card>
   </q-page>
   <div
     class="q-pa-lg absolute circle-holder"
